@@ -1,0 +1,23 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPI", "WebAPI\WebAPI.csproj", "{CF2C0BCE-1766-49F5-82DB-7036F1C357AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PactTest", "PactTest\PactTest.csproj", "{E53C538F-2D3A-4EDB-AD79-8BC2B7045E3C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CF2C0BCE-1766-49F5-82DB-7036F1C357AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF2C0BCE-1766-49F5-82DB-7036F1C357AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF2C0BCE-1766-49F5-82DB-7036F1C357AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF2C0BCE-1766-49F5-82DB-7036F1C357AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E53C538F-2D3A-4EDB-AD79-8BC2B7045E3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E53C538F-2D3A-4EDB-AD79-8BC2B7045E3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E53C538F-2D3A-4EDB-AD79-8BC2B7045E3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E53C538F-2D3A-4EDB-AD79-8BC2B7045E3C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
