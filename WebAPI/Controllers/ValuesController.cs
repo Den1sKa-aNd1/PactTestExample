@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Bearded.Monads;
 using WebAPI.Models;
 using Newtonsoft.Json;
+using WebAPI.Services;
+using WebAPI.Interfaces;
 
 namespace WebAPI.Controllers
 {
@@ -10,11 +12,17 @@ namespace WebAPI.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+        private readonly IValuesService _valuesService;
+
+        public ValuesController(IValuesService valuesService)
+        {
+            _valuesService = valuesService;
+        }
         // GET api/values
         [HttpGet]
         public ActionResult Get()
         {
-            var result = new SomeDto { NumberParam = 1, StringParam = "str" };
+            var result = _valuesService.GetSomeDto();
             return Ok(result);
         }
     }

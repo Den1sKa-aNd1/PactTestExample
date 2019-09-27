@@ -19,7 +19,7 @@ namespace PactTest
             var pactConfig = new PactConfig
             {
                 SpecificationVersion = "2.0.0",
-                PactDir = @"..\..\..\..\pact",
+                PactDir = @"..\..\..\pact",
                 LogDir = @".\pact_logs"
             };
             _pactBuilder = new PactBuilder(pactConfig)

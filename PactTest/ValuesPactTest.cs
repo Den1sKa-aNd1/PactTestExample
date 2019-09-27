@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
+using PactNet.Matchers;
 using PactNet.Mocks.MockHttpService;
 using PactNet.Mocks.MockHttpService.Models;
 using WebAPI.Models;
@@ -38,18 +40,16 @@ namespace PactTest
                     {
                         { "Content-Type", "application/json; charset=utf-8" }
                     },
-                    Body = new SomeDto
-                    {
-                        NumberParam = 1,
-                        StringParam = "str"
-                    }
+                    Body = Match.Type(new { NumberParam = 888, StringParam = "fake"})
                 });
             var httpClient = new HttpClient();
             var response = await httpClient.GetAsync($"{_serviceUri}/api/values");
             var json = await response.Content.ReadAsStringAsync();
             var someDto = JsonConvert.DeserializeObject<SomeDto>(json);
 
-            Assert.Equal(someDto.NumberParam, 1);
+            Assert.Equal(888, someDto.NumberParam);
+            
+            _mockProviderService.VerifyInteractions();
         }
     }
 }

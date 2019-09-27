@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using WebAPI.Interfaces;
+using WebAPI.Middleware;
+using WebAPI.Services;
 
 namespace WebAPI
 {
@@ -26,6 +23,7 @@ namespace WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            ConfigureAdittionalServices(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -39,9 +37,15 @@ namespace WebAPI
             {
                 app.UseHsts();
             }
+            AddMiddleware(app);
 
             app.UseHttpsRedirection();
             app.UseMvc();
         }
+        public virtual void ConfigureAdittionalServices(IServiceCollection services)
+        {
+            services.AddScoped<IValuesService, ValuesService>();
+        }
+        public virtual void AddMiddleware(IApplicationBuilder app) { }
     }
 }

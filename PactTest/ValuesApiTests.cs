@@ -1,29 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.DependencyInjection;
 using PactNet;
 using PactNet.Infrastructure.Outputters;
+using PactNet.Mocks.MockHttpService;
 using PactTest.Outputters;
+using WebAPI;
+using WebAPI.Interfaces;
+using WebAPI.Services;
 using Xunit;
 using Xunit.Abstractions;
 
 namespace PactTest
 {
-    public class ValuesApiTests: IDisposable
+    public class ValuesApiTests: IDisposable, IClassFixture<ValuesApiMock>
     {
-        private readonly string _serviceUri;
-        private readonly IWebHost _webHost;
         private readonly ITestOutputHelper _output;
+        private readonly IWebHost _webHost;
+        private string _ServiceUri { get; }
+
         public ValuesApiTests(ITestOutputHelper output)
         {
-            _serviceUri = "https://localhost:5001";
             _output = output;
+            _ServiceUri = "http://localhost:9000";
+
+            _webHost = WebHost.CreateDefaultBuilder()
+                .UseUrls(_ServiceUri)
+                .UseStartup<TestStartup>()
+                .Build();
+            _webHost.Start();
         }
 
         [Fact]
-        public void Pact_Should_Be_Verified()
+        public async Task Pact_Should_Be_Verified()
         {
-
             var pactConfig = new PactVerifierConfig
             {
                 Outputters = new List<IOutput>
@@ -32,19 +48,35 @@ namespace PactTest
                     },
                 Verbose = true
             };
+            
             new PactVerifier(pactConfig)
-            .ServiceProvider("otherApi", _serviceUri)
-            .HonoursPactWith("Values")
-            .PactUri(@"..\..\..\..\pact\values-otherapi.json")
-            .Verify();
-
+                .ProviderState($"{_ServiceUri}/provider-states")
+                .ServiceProvider("otherApi", _ServiceUri)
+                .HonoursPactWith("Values")
+                .PactUri(@".\pact\values-otherapi.json")
+                .Verify();
+            
         }
 
-        private bool _disposed;
+        private bool disposedValue;
 
-        void IDisposable.Dispose()
+        protected virtual void Dispose(bool disposing)
         {
-            // _pactBuilder.Build();
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    _webHost.StopAsync().GetAwaiter().GetResult();
+                    _webHost.Dispose();
+                }
+
+                disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
         }
     }
 }
