@@ -1,9 +1,4 @@
-﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
-using Bearded.Monads;
-using WebAPI.Models;
-using Newtonsoft.Json;
-using WebAPI.Services;
+﻿using Microsoft.AspNetCore.Mvc;
 using WebAPI.Interfaces;
 
 namespace WebAPI.Controllers

@@ -1,19 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.DependencyInjection;
 using PactNet;
 using PactNet.Infrastructure.Outputters;
-using PactNet.Mocks.MockHttpService;
 using PactTest.Outputters;
 using WebAPI;
-using WebAPI.Interfaces;
-using WebAPI.Services;
 using Xunit;
 using Xunit.Abstractions;
 

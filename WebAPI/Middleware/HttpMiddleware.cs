@@ -1,10 +1,7 @@
-﻿using System;
-using System.IO;
-using System.Text;
+﻿using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
-using Newtonsoft.Json;
+using System.Text.Json;
 using WebAPI.Models;
 
 namespace WebAPI.Middleware
@@ -37,7 +34,7 @@ namespace WebAPI.Middleware
         {
 
             //...and copy it into a string
-            string text = JsonConvert.SerializeObject(new SomeDto { NumberParam = 3, StringParam = "string from middleware" });
+            string text = JsonSerializer.Serialize(new SomeDto { NumberParam = 3, StringParam = "string from middleware" });
             //We need to reset the reader for the response so that the client can read it.
 
             //Return the string for the response, including the status code (e.g. 200, 404, 401, etc.)

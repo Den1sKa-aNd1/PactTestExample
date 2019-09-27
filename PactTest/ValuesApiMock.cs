@@ -31,8 +31,6 @@ namespace PactTest
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
             });
         }
-        private bool _disposed;
-
         void IDisposable.Dispose()
         {
             _pactBuilder.Build();

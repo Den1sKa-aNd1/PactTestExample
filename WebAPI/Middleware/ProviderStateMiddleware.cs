@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace WebAPI.Middleware
 {
@@ -36,8 +36,6 @@ namespace WebAPI.Middleware
             if (context.Request.Path.Value == "/provider-states")
             {
                 this.HandleProviderStatesRequest(context);
-                //await context.Response.WriteAsync("some response");
-                //await context.Response.;
             }
             else
             {
@@ -52,19 +50,26 @@ namespace WebAPI.Middleware
             if (context.Request.Method.ToUpper() == HttpMethod.Post.ToString().ToUpper() &&
                 context.Request.Body != null)
             {
-                string jsonRequestBody = String.Empty;
-                using (var reader = new StreamReader(context.Request.Body, Encoding.UTF8))
+                try
                 {
-                    jsonRequestBody = reader.ReadToEnd();
+                    string jsonRequestBody = String.Empty;
+                    using (var reader = new StreamReader(context.Request.Body, Encoding.UTF8))
+                    {
+                        jsonRequestBody = reader.ReadToEndAsync().Result;
+                    }
+
+                    var providerState = JsonSerializer.Deserialize<ProviderState>(jsonRequestBody);
+
+                    //A null or empty provider state key must be handled
+                    if (providerState != null && !String.IsNullOrEmpty(providerState.State) &&
+                        providerState.Consumer == ConsumerName)
+                    {
+                        _providerStates[providerState.State].Invoke();
+                    }
                 }
-
-                var providerState = JsonConvert.DeserializeObject<ProviderState>(jsonRequestBody);
-
-                //A null or empty provider state key must be handled
-                if (providerState != null && !String.IsNullOrEmpty(providerState.State) &&
-                    providerState.Consumer == ConsumerName)
+                catch(Exception e)
                 {
-                    _providerStates[providerState.State].Invoke();
+                    Console.WriteLine(e);
                 }
             }
         }
